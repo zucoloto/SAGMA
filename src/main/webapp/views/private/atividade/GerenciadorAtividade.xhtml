@@ -1,0 +1,135 @@
+<ui:composition template="/WEB-INF/template/Template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">#{msg.titulo_atividade}</ui:define>
+
+	<ui:define name="menu">
+		<ui:include src="/WEB-INF/template/MenuPrivate.xhtml" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<f:metadata>
+			<o:viewParam name="atividade"
+				value="#{gerenciadorAtividadeBean.atividade}" />
+			<f:viewAction action="#{gerenciadorAtividadeBean.inicializar}" />
+		</f:metadata>
+
+		<h:form>
+
+			<h1>#{gerenciadorAtividadeBean.editando ?
+				msg.titulo_atividade_Editar : msg.titulo_atividade_Novo}</h1>
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:button value="#{msg.comando_novo}"
+						outcome="/views/private/atividade/GerenciadorAtividade"
+						icon="#{msg.icon_novo}" />
+
+					<p:commandButton value="#{msg.comando_salvar}"
+						action="#{gerenciadorAtividadeBean.salvar}"
+						icon="#{msg.icon_salvar}" update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="#{msg.comando_pesquisar}"
+						outcome="/views/private/atividade/PesquisarAtividade"
+						icon="#{msg.icon_pesquisar}" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo"
+				styleClass="panel-sem-bordas">
+
+				<p:outputLabel value="#{msg.usuario}"
+					rendered="#{!gerenciadorAtividadeBean.editando == true}" />
+				<p:inputText
+					value="#{gerenciadorAtividadeBean.atividade.usuario.nomeUsuario}"
+					disabled="true" style="width: 400px;"
+					rendered="#{!gerenciadorAtividadeBean.editando == true}" />
+
+				<p:outputLabel value="#{msg.usuario}" for="usuario"
+					rendered="#{!gerenciadorAtividadeBean.editando == false}" />
+				<p:selectOneMenu id="usuario"
+					value="#{gerenciadorAtividadeBean.atividade.usuario}"
+					style="width: 430px;"
+					rendered="#{!gerenciadorAtividadeBean.editando == false}">
+					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+						noSelectionOption="true" />
+					<f:selectItems value="#{gerenciadorAtividadeBean.usuarios}"
+						var="usuario" itemValue="#{usuario}"
+						itemLabel="#{usuario.nomeUsuario}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="#{msg.atividade}" for="atividade" />
+				<p:selectOneMenu id="atividade"
+					value="#{gerenciadorAtividadeBean.atividade.assuntoAtividade}">
+					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+						noSelectionOption="true" />
+					<f:selectItems
+						value="#{gerenciadorAtividadeBean.assuntoAtividades}"
+						var="atividade" itemValue="#{atividade}"
+						itemLabel="#{atividade.nomeAtividade}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="#{msg.prioridade}" for="prioridade" />
+				<p:selectOneMenu id="prioridade"
+					value="#{gerenciadorAtividadeBean.atividade.statusPrioridade}">
+					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+						noSelectionOption="true" />
+					<f:selectItems value="#{gerenciadorAtividadeBean.statusPrioridade}"
+						var="statusPrioridade" itemValue="#{statusPrioridade}"
+						itemLabel="#{statusPrioridade.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="#{msg.status}" for="status" />
+				<p:selectOneMenu id="status"
+					value="#{gerenciadorAtividadeBean.atividade.statusAtividade}">
+					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+						noSelectionOption="true" />
+					<f:selectItems value="#{gerenciadorAtividadeBean.statusAtividade}"
+						var="statusAtividade" itemValue="#{statusAtividade}"
+						itemLabel="#{statusAtividade.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="#{msg.prazo}" for="prazo" />
+				<p:calendar id="prazo"
+					value="#{gerenciadorAtividadeBean.atividade.prazo}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="false"
+					pages="1" mode="popup" locale="pt" />
+
+				<p:outputLabel value="#{msg.dtInicio}" for="dtInicio" />
+				<p:calendar id="dtInicio"
+					value="#{gerenciadorAtividadeBean.atividade.dataInicio}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="false"
+					pages="1" mode="popup"
+					maxdate="#{gerenciadorAtividadeBean.dataHoje}" locale="pt" />
+
+				<p:outputLabel value="#{msg.dtTermino}" for="dtTermino" />
+				<p:calendar id="dtTermino"
+					value="#{gerenciadorAtividadeBean.atividade.dataTermino}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="false"
+					pages="1" mode="popup"
+					maxdate="#{gerenciadorAtividadeBean.dataHoje}" locale="pt" />
+
+				<p:outputLabel value="#{msg.observacao}" for="obs" />
+				<h:panelGroup layout="block" style="padding-right: 10px">
+					<p:inputTextarea id="obs"
+						value="#{gerenciadorAtividadeBean.atividade.observacao}" rows="5"
+						cols="50" counter="display" maxlength="1000"
+						counterTemplate="{0} #{msg.counterTemplate}." style="width: 100%" />
+					<h:outputText id="display" />
+				</h:panelGroup>
+
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

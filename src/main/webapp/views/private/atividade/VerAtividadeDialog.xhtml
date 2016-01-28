@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+<h:head>
+	<meta charset="UTF-8" />
+	<title><ui:insert name="titulo">Atividade</ui:insert></title>
+	<h:outputStylesheet library="css" name="sistema.css" />
+</h:head>
+
+<h:body>
+
+	<p:dialog widgetVar="verAtividade" height="100%" width="500px"
+		modal="true" closable="true" resizable="false"
+		style="font-size: 14px;">
+
+		<h:form id="verForm" prependId="false">
+
+
+			<p:panelGrid columns="2" style="width: 100%;"
+				columnClasses="rotulo, campo">
+
+				<p:outputLabel value="#{msg.usuario}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.usuario.nomeUsuario}" />
+
+				<p:outputLabel value="#{msg.atividade}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.assuntoAtividade.nomeAtividade}" />
+
+				<p:outputLabel value="#{msg.prioridade}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.statusPrioridade.descricao}" />
+
+				<p:outputLabel value="#{msg.status}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.statusAtividade.descricao}" />
+
+				<p:outputLabel value="#{msg.prazo}:" style="font-weight: bold;" />
+				<p:outputLabel value="#{gerenciadorAtividadeBean.atividade.prazo}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="#{msg.dtInicio}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.dataInicio}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="#{msg.dtTermino}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.dataTermino}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="#{msg.observacao}:" style="font-weight: bold;" />
+				<p:outputLabel
+					value="#{gerenciadorAtividadeBean.atividade.observacao}" />
+
+			</p:panelGrid>
+
+			<br />
+
+			<p:commandButton value="#{msg.comando_fechar}" icon="ui-icon-cancel"
+				onclick="PF('verAtividade').hide();" type="button" />
+
+		</h:form>
+
+	</p:dialog>
+
+</h:body>
+
+</html>

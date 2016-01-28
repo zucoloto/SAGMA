@@ -1,0 +1,42 @@
+<ui:composition template="/WEB-INF/template/Template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">#{msg.titulo_sistema}</ui:define>
+
+	<ui:define name="conteudo">
+
+		<f:metadata>
+			<f:viewParam name="dummy" />
+			<f:event listener="#{loginBean.preRender}" type="preRenderView" />
+			<f:viewAction action="#{gerenciadorConfigurarBean.inicializar}" />
+		</f:metadata>
+
+		<div id="login-dialog">
+			<h1>#{msg.acesso_sistema}</h1>
+
+			<h:form id="frm" prependId="false">
+
+				<p:messages autoUpdate="true" closable="true" />
+
+				<h:panelGrid columns="2" styleClass="grid-login">
+					<p:outputLabel value="#{msg.identidade}" />
+					<p:inputText size="15" id="j_username"
+						value="#{loginBean.identidadeUsuario}" />
+
+					<p:outputLabel value="#{msg.senha}" />
+					<p:password size="15" id="j_password" />
+
+					<h:panelGroup />
+					<p:commandButton value="#{msg.comando_ok}" icon="#{msg.icon_ok}"
+						action="#{loginBean.login}" ajax="false" />
+				</h:panelGrid>
+			</h:form>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,190 @@
+-- Estrutura da tabela 'Usuário'
+CREATE TABLE IF NOT EXISTS seg_usuario (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  identidade VARCHAR(15) UNIQUE KEY NOT NULL,
+  nome_usuario VARCHAR(100) NOT NULL,
+  email VARCHAR(255) UNIQUE KEY NOT NULL,
+  status_usuario VARCHAR(20) NOT NULL,
+  senha VARCHAR(32) NOT NULL,
+  PRIMARY KEY(id)
+) ENGINE=InnoDB;
+
+-- Estrutura da tabela 'configurar'
+CREATE TABLE atv_configurar (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  om VARCHAR(100) NOT NULL,
+  sigla VARCHAR(20) NOT NULL,
+  logo MEDIUMBLOB NOT NULL,
+  diretorio_pop VARCHAR(255),
+  PRIMARY KEY(id)
+) ENGINE=InnoDB;
+
+-- Estrutura da tabela 'fracao'
+CREATE TABLE IF NOT EXISTS atv_fracao (
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  nome_fracao VARCHAR(100) NOT NULL,
+  fracao_pai_id BIGINT(20),
+  ordem_qc VARCHAR(10) NOT NULL,
+  PRIMARY KEY(id),
+  INDEX fk_fracao_fracao_pai(fracao_pai_id),
+  FOREIGN KEY(fracao_pai_id) REFERENCES atv_fracao(id)
+) ENGINE=InnoDB AUTO_INCREMENT=32;
+
+-- Estrutura da tabela 'assunto_atividade'
+CREATE TABLE atv_assunto_atividade (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  fracao_id BIGINT NOT NULL,  
+  nome_atividade VARCHAR(100) NOT NULL,
+  caderno_encargo TINYINT(1) NOT NULL,  
+  periodico VARCHAR(30) NULL,
+  PRIMARY KEY(id),
+  INDEX fk_assunto_fracao(fracao_id),
+  FOREIGN KEY(fracao_id) REFERENCES atv_fracao(id)
+) ENGINE=InnoDB;
+
+-- Estrutura da tabela 'pop'
+CREATE TABLE atv_pop (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  pop VARCHAR(100) NULL,
+  assunto_atividade_id BIGINT NOT NULL,
+  PRIMARY KEY(id),
+  INDEX fk_atividade_assunto(assunto_atividade_id),
+  FOREIGN KEY(assunto_atividade_id) REFERENCES atv_assunto_atividade(id)
+) ENGINE=InnoDB;
+
+-- Estrutura da tabela 'usuario_fracao'
+CREATE TABLE IF NOT EXISTS atv_usuario_fracao (
+  usuario_id BIGINT(20) NOT NULL,
+  fracao_id BIGINT(20) NOT NULL,
+  PRIMARY KEY (usuario_id, fracao_id),
+  INDEX fk_usuario_fracao(usuario_id),
+  INDEX fk_fracao_usuario(fracao_id),
+  FOREIGN KEY(usuario_id) REFERENCES seg_usuario(id),
+  FOREIGN KEY(fracao_id) REFERENCES atv_fracao(id)
+) ENGINE=InnoDB;
+
+
+-- Estrutura da tabela 'atividade'
+CREATE TABLE IF NOT EXISTS atv_atividade (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  assunto_atividade_id BIGINT NOT NULL,
+  usuario_id BIGINT NOT NULL,
+  status_prioridade VARCHAR(20) NOT NULL,
+  status_atividade VARCHAR(20) NOT NULL,
+  prazo DATE NULL,
+  data_inicio DATE NULL,
+  data_termino DATE NULL,
+  observacao TEXT,
+  PRIMARY KEY(id),
+  INDEX fk_atividade_assunto(assunto_atividade_id),  
+  INDEX fk_atividade_usuario(usuario_id),
+  FOREIGN KEY(assunto_atividade_id) REFERENCES atv_assunto_atividade(id), 
+  FOREIGN KEY(usuario_id) REFERENCES seg_usuario(id)
+) ENGINE=InnoDB;
+
+-- Estrutura da tabela 'grupo'
+CREATE TABLE IF NOT EXISTS atv_grupo (
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  nome_grupo VARCHAR(50) NOT NULL,
+  descricao VARCHAR(100) NOT NULL,
+  PRIMARY KEY(id)
+) ENGINE=InnoDB AUTO_INCREMENT=7;
+
+-- Estrutura da tabela 'usuario_grupo'
+CREATE TABLE IF NOT EXISTS atv_usuario_grupo (
+  usuario_id BIGINT(20) NOT NULL,
+  grupo_id BIGINT(20) NOT NULL,
+  PRIMARY KEY (usuario_id, grupo_id),
+  INDEX fk_usuario_grupo(usuario_id),
+  INDEX fk_grupo_usuario(grupo_id),
+  FOREIGN KEY(usuario_id) REFERENCES seg_usuario(id),
+  FOREIGN KEY(grupo_id) REFERENCES atv_grupo(id)
+) ENGINE=InnoDB;
+
+INSERT INTO `atv_configurar` (`id`, `om`, `sigla`, `logo`, `diretorio_pop`) VALUES
+(1, 
+'Centro de Comunicação Social do Exército', 
+'CCOMSEx', 0x89504e470d0a1a0a0000000d494844520000003b000000500806000000a7160d2a00000006624b474400ff00ff00ffa0bda793000000097048597300001ec200001ec2016ed0753e0000000774494d4507df0515121011bf4b693a000017224944415478daed9c79781cd595e87fb7aa7a57ab5b6b6b976cc95a6db5655bf202b6596256131e1008c99bbc64c284907c0ce43dc8040859862140f242163284409621092fe10109c316c0ec78c3bb6449962c4bb2ac5d962c75ab17f5525577fee80061826dc936b1ffc8f93e7daaafbb6eddf3ab73aaceb9f79edbf077f9bbfc5d8e27076ad28f7b4ee79517fd4d7411a7fa82fbae594fed13cf03105c90b1c066b3ad57adb60661779408cde2352d967400a127c324f580198ff599b1786b321e7ccedd1de904901f8562a7ea9a3d57afa3fcc957008856e5b8a4d3b9d662b1fc42f366e453500c593990ee01a713344baa91aec34c048241981c87a1218cc0c458c248de2813c997d35a474200bbaebf94a58fbc70e659365a9bff555b6ececda2a0a4509657204acbc15700763b183ac46652ff25a06960b521350d9148200f8fc0a15e446f3772b0ff70f2f0e82feceda35f3fe32c1badcdabb2a4b9fea4cdab9c2feb172317d420b27cc87814860610c303706402424188c5538e6ab5419a1b323221bf080a4bc0ed86c909e8ed82bdcd183d9d013d125ee7681dd9795a61a3cb4a70eeec2756937bb35650fc3da5a1d14a4323727e056264047a3aa0ab13fa0ea20726fb4c43ff03aaf976d053d0a70843774d4f948a846c54357191e64a5f4971192ca8828aaa14f8e111d8b313b967a7a9f7f53e64eb18bd31b8bc1ccfb69ebf2d6cb0be04cfde7ee2fea23bb4b2f9df112bd7424313d2e140b435c3ee1d98bd5d53e6918947a3e1e99f7a7b82ddc7bade48b5272343b57f41cdc8f927a5b86481d2d08459bf04a159a07517bcb389e481ce9fdf1a7ee48b3fe9ba40fecd60a7972c227d772b717fd17d96eabaafb17235b2f12c4420003b3763eedc8e3e70f0297bf3c0d5b379ab1e5abf82d2e7df61f3851773d6cb2f12ad2fbbd19a9df180b264b9a07125b2781e62ef2ed8fa3646ebee37934971be81d574b7767db471eaf97fbc0980584dc19dc615e74af9efdf95e6b64dd27ce64969de7abd34d62e8ec6eaf22e7f377cb4defdd5395d3fe42f4f3d22e5be3a7d55d53ef3fa4f49e3b19f4b73fb6669feea41697ee67299f0973c0e105cb6f6a3030d35cc0760c65fbc46bf6cb5697eff2e696edb24e5b34f49f396eba5bea22a16a8f51502fcf08edb4faaafc8e2225e225789fbcbbacd2f5c2bcddf3e22cd9def48f3e11f49fdd3eb656251c93d0032ef2374e39e85d5ae32af32ae9c7f89c35c770922a9c36b2f4af9c64bd199c9f1bab48e8943517f31ce9681537283c7ea726d19cef44deaf295cbc4f99740c93cd8f83a72c3f3c40f759de76c9f78632ed75366735278593183b555a2d8127d41f81b1de6922684c3013bb722776c16e1a9f18bd33a260e01c7047df7cdd2ea5fec994dbfbef6c3f150f4c83a76ee08f2ce26084c41431362d90aacde9c0de1aadc4ce9b39c5ad8b49d03643aa3f56a69f95a163720ca2ba1bd15d9b2037d6cf426cfbe898db2c83e2b37dadf50b9dc99a3be32abf0d6504c56fb54201189369a7b77c569d989f47861e972943abf6675b9ee106349a697fb4f1d2c805571bc22eaeaa1ba1e468791cd3b303bda0fbc35107e30b0fa6388c1d831dbb73736a5aee3f3dee35a5cd7d0d154b318e085bbbf7dd436ce3d03bcf6d4b3385afb0fe8fdfd0fb37b3ba2b30dca2a60e16294ec9c5b2235bedaf46d2da70636bca492444dce75eafc8a1c162e86ac6ce86c47ee6b63c29dbbf4822393a677e3abc7eda86ec776da9b9aea545ff67976ff12cd6ad79e04b8f4ce6f1fb3ddf99ff83800f6f6e19bf59eae413adb201e472e5a82b2a8019bddfee8ab9fa814270d3bbdac96b4dd5d888cec1b6465352ca886e101e86c438e8ffe3effcd6da1b1b58db3baab6f67d4a9362df4baadac044b5109d6225f45877fc15766d37660eb33a9673e12be898e3649573b1497a4f4292a5ebcaac7283c69d8f49dfb986ea8ac5673739789f24a70a5c381fd985dfbd0a7a6ee1eb96c35beb776cc0a36bf7866a935df976bc9cd43f164a2151560f5d8afea2ccb3bae7715afbc1c805e47c973b2f7c03407ba52494c550dcafc4a8b2acc1f9e1237b61bd1079957812c2b872387e16037e691f1cd8edec0befce736cefa4d28a5945835144f3a8a330dd5ed4608ccb9e47e35dbb6eab178e476ba3b117d3d90570cf32bd0dc699f18afccf19c146ca0362f5bf5669c437119d25700438790077bd051bf74c2f9a9a221341584f88b6034cb1b06b8f68e3e248707a6e5402f525391a5f3a1743e1e4dbdee8461032b6b70c1528a4a05a5f310aa068303303136ac4c4ff58496569c20ee09e7f1ecbbf1f37f4ee7a69f616800317e1831af02a5b40225ddfdf11386f56eed0097eb5c91eb13e417c1c4280c0d604e1d69b31f988cba7775ffcde7b3eafefd570456566084a79f9303fd30d807de0c647e3ec2e36d3cdeadfc50d896efdf997239abed52919387f464c0e151e4c81044a3bf3b9d1378deaddd84e11531320c63a3a01be02b40c9c871461b4acf117385f5df7a37f382bb14c5ee5828737c088b15260e2326c698747a9e3ddd3396999d1301331aee63620c42d3e02b40e6176031f49b4ec88ddb1b579f8d371332bda02761621c331a19f735f74e8daf5f7ddaa76865d2f88d383c068149c8c880ec5c14abedd213825555d71a3c5e48f7422c06c10052d7df02c8797ee369878da67bff280347201848c5ff8c0c447aba35549e9d37675861759c85373d051b8d4028007a72eb9930f1de7fd5c5b827c7ba65342a090610562b78b3c093854d93f34fc0b2629e707b11691e980e20a74360ca963301b6e40f2fa29b18321a1e653a0852078f17919e0e167b61dffd5f9f3deccc3caf55d8ec766977206d76988922625183f8ccd4e667ff7826f0a29334c44c3c40348c8c27c0e5463a5d08ab965776cb77660f2b6d563b36bb1d8703a9aa88580c198b9b98c4cefaf8956704ac500c5324e221662288781c5c4e84c389a2a825737263d530add8ec56ec4e84a6402c8a48c67533190d738688a33d60c8442c4834868c46c1e142ba5c48552d9b13ac9452a06a0a9a06a6402693c864420ae94c7206893465482463908c83d58ab058108a9a3e37589b5545414508e4a16e3025c23465cc6231ce24584355c332a9230c1d1415a959908a9276b4f3b50fbf03ba8294169a77a1ecde8e54401849454f444fab65ff6ad23d9998128689d40d501584a62115c5fbdfdb4d9db3928c37b77e386cc89e11d2c68f7c5b8cbfa38144003a4642cfc98d7270eaf4bd9480e8c2c21f588470621ad2348c151849300d502d48d502a6519caccbff09426852609d49cffd57cf9b5bfb8f6ad9ec5d5d21e03ece409931c5dd168f7baf5236af50f36622dd69a9745608b0a8a80d4d6ee23337caa17ef4a1a1fb3d9b9bfbdfb5ec3107ef0fdc73df07fe9f6e995e5844d6bec1c9e990adceece98c989a05162f03571a5251a06a2154546306a6480c0edd6a6b19b81520e3cdadc7cea04275057ce6a1dbecb1babc6b6fbae336ba2f5e7eda61d3db0601c86a6b0ece243c85e6ce2dbd62cb46e4d000627810ba3a30dfde80ded1769f63efc0fda1bac2e3bfa000dcedc3c49696ff87969d796d0ccd6a7f71db6fce24774e6fde136c5ff0b1aa05db360e6a481f838760eb26ccae03f7dadb46ee08d515e06e1f3a76e8092fca170089c5257fd26a175eabac391fadb4e4d7f105b937034c9cd77846c086fdf3a93bf0aa1e9f8cd418db370fc8373790dcbfef6e6bdbe01d33d545b8db878f1f7ad25a47646c49d9a35a9dff62ce590715d528aa05043f8a3b6c876dafeff8fd99009bd6d29bf2c09eb1297ac64a66eaa2f73ada47be31535782a3bdffd84945d49f4a2993fed2ffb42ef47f9673d6419d1faaea526b2be75c885652fabb786dfe6d0013ab169d19166ea8f873fa38727bc47f74d0f76083ab6a0885d112cb2a7ea32ca8bc5c1614417f1f8c0e81aac0403f8483b0a01aadb4f4de5843d917b2b7b4d27292ebb02723b12535290bef797fe2cfd592028d2ead3d7a06e5d9d241acbef066558f55cb9efddb45cf01bba8acae97f54b52198b02e6ae1d520ef4b50a959866caeb676af30f3beeb9f799d3056bdfddc14c6343a625d4570f98ef7e9eb07b03ce5dfbf61e1536b8aa06fb968efb81fb01a28bf27d76c31812c9842a8502aa053425998846d63b0f4cbeb700db72c7edf8efb9f7b459d7121c58a756543f8ec78b942090d87b7bde02ce39a665ff526c8669c5481ad248aa205379a7508545151ee03dd8d3090a6028a64dc9c842aebf12e170219b7720fb0e86e734ea314dc3403775a11b20656a35405385620a8533484ca95885a2203c99a9fa295322213927d884220c4cc3907a12a4446a56d03445b7daec3d37fdef33065653946c2c56d094d430d43031858ccd0956d1655cc6a231118922e27184cb89b43b1561b57aca1f38f6ea60cf9597bd77bce3920b67adf873577f16f9fc8fe6665955f5499b1dec8ed402757c0625a98fcc09d630a233622636c34c18198f231d4e14bb1d8e31e5f1ae94fff139c61ebcf7ab877ffbb34f3b9737f9defb221ed3911221044255ff3cd360ca9abe511360fcc9df5a0ec7d2cf1b7bf87b3fe8f9f17daed9c0aaaaa544d81d6073427c0666a2983034a7c17b5a4f346e7a2231333283129b018703e97401b27a56ee25757f64c333dff39dbbd61c7feca10d234ffee9b36a9ef71a4533890d8f93d8b405332eb0d6d69777d7afb8d5b5b8c1694f53ee9879fb15abf07ac71d0b577ceb787d745ebb4e88aeae2ce97080c38e080690f11822111f9f132c80a11bbd6a285829430148cf80740f8aaace6ae8233485d8d6bdc477b62b96f2928b721aeac7502dcc6c789df8ee66a429118a829ae929f2ac3defffcebcfd22e1b62ecc8920e9ffeb2a8972fc128979cdbb35b27dd9c2ed413a5cc8c834221cc24c26c6e63c492e93c90d4c8e23a62653f5c21e0f586cab66fd40a902a99b24bafa98feed1f31a626d1c7a73026829893d31813018ca92032304d6ce32e6438865067f7b2dffff9eb11aaa649a72b577a3c60d1606a0a391dc44c2406e60c1bd7ec1be4e41164602a157a3c19280e87185c523ccb223a0152826ea066a5a1daac48538269fec55f2a864bfefcf92ca5ea578f90c82cb20887334778324037213405d3418ed8d20ecdd98dddadfded469617262790d284cc5cc8f5e13bd4fb3f809f1d6f664c58152cf905581bea928ea54d3de1f67dd9b6aad26ca90884504151102ebb14199e60c68d9f23f6ce6e6f625f770a7c368e133d72a1282f41666641641a024164341228da3714999365f7df905a2b91b1d806c646613a08393ec8cd03bbfdf2e329a2586d968c2fdf80edb2f5df559ad6943f77cd2d75335b76deae66a4e3f4d7606da8c771f6d958fccbdf08751caa92f3eacbe5f235ffe0bee94b476ca5f39c663c79dc875635e5ff24c7071959a9eaf3b161f444e2d163eaf5a16ef2b3d45a898cc7ffc0e8308c8e404e0ee4e6a1b8bd55f1ca6c7bd775478fa1c123911f657fe97691ffcfdfb8cdd7d73910fdf2e74d3919d8ab0782e8631358b332702d5944fab9ebb28545991c7d75d364e957bff9ff7c377c2d7b6a247471f44077ecb8b076fbe5e4f8c0ed458c1f86c363241cca23c78c12479d836aaa424c4dec606cc414c3038aacad83c2624476eebc0489ccca5fbe3cfca149c5155751fa2fdfda0ab0e79aab10b7a426ebf6373658b16a187a9264ff008ac383744d8fc70ef699fe175f63e3a72f65f5ef5ea0e25bdfd97c2c85bbbe7405a5afbe7d017985c8c262b059616c14190c04dc3b063be66c5900f7f6fd6c4b069acd91c169d9df0b1313c8a2124441119670e2ff1c35a978fa0fef1d373cf1feb15475ab8a4073a7a16466221c5684dbe3d57c3e01b0fa77b3dbce52f9d0d32869eecb282a461495a5a2c5503f0426df39eee375ac2fcfea33a4119bb98f833d307808919d872c9b87c5e5b8a5e5dc5acbd4c7cf9bfd702c2e227a2482d054b40c37d6fc3ceca5a52ebb2f77eefb14bc199f12a5f391b93e38d48becef450f859e9c5ebde8c4610176d45df67d39d49fa4af07ec76647925cafc4a6ac6266ff43efbfaacf54bd845446856ccd00cfae129f46090d840ff586c6ccc9c0b67ac36ef734a7e411665e590d4e1502ff4f7d1ed4a7b2c7d63ebc9c19efdf8c3867964e2f7e24027f41f84f22a647925222beb86b998c4a29bf3d474276a861b25d38d505584aa5993b1d9b14e2fafa4bfb6c2aaa5a53d20165443c97cc4703f7477a04722dfabdbd59b3829370688145a88c5123f949d6db0bf3d5526545d87282ead8c2dcc9f75599f947a9f198c20933a8a54511c76acb9b95e4741f6717578fd97df247d5b1779b6c495ca826a3735f5a9ed6e073a31fb7a233269de3f1b1d8edb916b28897bdf7073727ce239daf6c2a11ea8a842a95b8ce6cdfae9645d56ae2c387afbc73f771d336e27bac5e2134e1b007a2040626098d0eedd87e6fde041bd75fdba63ea70de7577315a99ed50d23cbf10d58ba0bc02d9b31f3a5a91c3fd6fdadb060e9f12d8f773e5c467ccaeb680d9ba07a168e05f82e25f82dbe179400c43d85ffca1ed3ef9e82f7184a2c8845c252331f4c92066284c321cc2482417ee6af2fb173d7ff42afa962bbec8655ffe3a5976c74bca22bf4bfa9720848a686b416f6f61c2bd7ad6750fb386b5b70d0593a3c33f117b76225b77415129f897a296ccfb64acaee0b6b4960102ab967f5886ccbe450bae71665aff55cbcb442bc8c1529287b3b488ecb5cb8b6a1e7faaf92eb07d589fd1fa22fc4f3fcc139b7efd39a5b27a8d58dc04f3ca919d6dc8b63d100cde98bfe9ff27c2ab66b74aa1cddab20e106da3df4cd83b2ed276e6368aac1c644313727a0a4b6ce63b3316eb5b8e2ddb3eb44e2aecab7cde9a1879cc189e6ab2c48d4a121269da881c1c6b8dc7e24f7d13e27f05baa810e7de4122b579abacd9b9ff2196ad40fa97c0c021d8b515b3bd75b837687b68ff17af26ede1274fad657b6fbf17092422e67a63cf8e84dcb611a62611cbce422c3f4bb1e4e46c9ea9ceb9122052ff7e79eede3567d3f4ea0bd18ab7767f261ed62f4453f7989e74536466bf191d99fe58e91dff76d7c44fbfff81be0e7ce51f70b60e11aef135da7df9af89b3d6c28a35c8580cb1f31dcce65db130517ff5c10366d52c414f58a66b7c8dfaf94b0cf3ae5ba5f9e6cbd278f54fd2fcf6bf487d5da38c2f2ebbeaddf3024d95efb539fceba7feda5b7ef9309baf7d7f0bf88e4f7df1bde399c5c5571be7f8a579e757a4f1d2b3d2d8f48634effb86342e5a29e3d5be2b000ebdf1d89cf49e73f612595484ab7590e8c2c20b6cbedc97c5ea8fc1f2d560b322776e416cdf8ad1ddf9c6eb85cb2eb8f085a7f589b31bc9de74fc7d043207c438ec2eadd5167ac32f69f32bcea37185902bd6208402db362337bf466260f44a4773f7d3c1b32fc4b3e9e58f16f603cf625dc1858ebcdca745d36a07cbcf86cc6ce86c85e65d98edcde8e1c8d792a1a927dc5d537d1fc8caeefe068d77fedb07071e95de226b5ac6558a3bedbb4acd429b58dc08b57e888661fb66e4d6b7d0fb0e7dc5d631fae3d0d206dcbbf6cc59df13df2c5c5f8c73ef00a1fae20576a7a353f52f53e4d22644652d221442ee6b86ee2ee4c19e8471647c504f247e6eaaf697d25a7af722840930b46271757670f812c5e6f827252b7bbe282db3b1a01651b70833db073dfb5176efc0dcfd8e8c05026b5c2d039b4ec6382767597f09692dfd8cd42c7065b98c5f2985c5d7288b1a5216c9cd4d59656808060ea6c6c4c129884691a68950009b0332b2c1e74bedd3292c03b7275501dbd6826c6bc63878606b72eac83fbabaa6f64f345592bdbdebf4c0be979c576760ef9c22e42f59e9b4585e6641659a985729289b0f85c548bb03251ec70c051189182492a05990361b22dd037627e809181d86833d70b007b37b7f3c1e98bac9d536f4c8744331e97b4e7ee7e629fb3583f1b3ebc9d9b497d7ce59aaad3e32ba5ea4b9fe59717bcfa3a00851589caaf64ef782c50aaa96aa5d4a26201c4a15488f0ec1403fc6d4646f321ebdd79c0afc675a6f70e254fe6685f8284354ffb2cacc9c58e046ab66ff24ae34af70b99d58ad165455c5344da9279244a231c2d3914422b12164557f9cbb7ba013a0fb9a73a978e28d53aacf4706fbdf2d3259e9733a652c4db7a6596d7a4c8bab36434dc61331558d66741e0ebd7bdec4aa6ab2b774f2773949f92fd8d30eebf364f5570000000049454e44ae426082, '/home/zucoloto/Imagens/uploaded/');
+
+INSERT INTO `atv_fracao` (`id`, `nome_fracao`, `fracao_pai_id`, `ordem_qc`) VALUES
+(1, 'Chefia', NULL, '1'),
+(2, 'Chefia', 1, '1.1'),
+(3, 'Subchefia', 1, '1.2'),
+(4, 'Estado-Maior Pessoal', 1, '1.3'),
+(5, 'Auxiliares da Chefia', 1, '1.4'),
+(6, 'Auxiliares da Subchefia', 1, '1.5'),
+(7, 'Divisão de Planejamento e Gestão', 1, '2'),
+(8, 'Chefia', 7, '2.1'),
+(9, 'Auxiliares', 8, '2.1.1'),
+(10, 'Seção de Integração e Coordenação', 7, '2.2'),
+(11, 'Chefia', 10, '2.2.1'),
+(12, 'Adjuntos e Auxiliar', 10, '2.2.2'),
+(13, 'Seção de Operações', 7, '2.3'),
+(14, 'Chefia', 13, '2.3.1'),
+(15, 'Adjuntos', 13, '2.3.2'),
+(16, 'Seção de Pesquisa e Marketing Institucional', 7, '2.4'),
+(17, 'Chefia', 16, '2.4.1'),
+(18, 'Adjuntos', 16, '2.4.2'),
+(19, 'Seção de Doutrina e Estudos', 7, '2.5'),
+(20, 'Chefia', 19, '2.5.1'),
+(21, 'Adjunto', 19, '2.5.2'),
+(22, 'Divisão de Relações com a Mídia', 1, '3'),
+(23, 'Chefia', 22, '3.1'),
+(24, 'Seção de Atendimento à Mídia', 22, '3.2'),
+(25, 'Chefia', 24, '3.2.1'),
+(26, 'Adjuntos', 24, '3.2.2'),
+(27, 'Seção de Acompanhamento de Notícias', 22, '3.3'),
+(28, 'Chefia', 27, '3.3.1'),
+(29, 'Auxiliares', 27, '3.3.2'),
+(30, 'Seção de Análise', 22, '3.4'),
+(31, 'Divisão de Relações Públicas', 1, '4'),
+(32, 'Chefia', 31, '4.1'),
+(33, 'Seção de Atendimento', 31, '4.2'),
+(34, 'Chefia', 33, '4.2.1'),
+(35, 'Auxiliar', 33, '4.2.2'),
+(36, 'Seção de Relacões Institucionais', 31, '4.3'),
+(37, 'Chefia', 36, '4.3.1'),
+(38, 'Auxiliar', 36, '4.3.2'),
+(39, 'Seção de Eventos', 31, '4.4'),
+(40, 'Chefia', 39, '4.4.1'),
+(41, 'Auxiliar', 39, '4.4.2'),
+(42, 'Divisão de Produção e Divulgação', 1, '5'),
+(43, 'Chefia', 42, '5.1'),
+(44, 'Seção de Mídia Impressa', 42, '5.2'),
+(45, 'Chefia', 44, '5.2.1'),
+(46, 'Adjuntos e Auxiliares', 44, '5.2.2'),
+(47, 'Seção de Mídia Eletrônica', 42, '5.3'),
+(48, 'Chefia', 47, '5.3.1'),
+(49, 'Adjuntos e Auxiliares', 47, '5.3.2'),
+(50, 'Grupo de Televisão', 47, '5.3.3'),
+(51, 'Seção de Mídias Sociais', 42, '5.4'),
+(52, 'Chefia', 51, '5.4.1'),
+(53, 'Adjuntos e Auxiliares', 51, '5.4.2'),
+(54, 'Seção de Internet', 42, '5.5'),
+(55, 'Chefia', 54, '5.5.1'),
+(56, 'Seção Rádio Verde-Oliva', 42, '5.6'),
+(57, 'Grupo Rádio', 56, '5.6.1'),
+(58, 'Seção de Redação', 42, '5.7'),
+(59, 'Chefia', 58, '5.7.1'),
+(60, 'Adjuntos', 58, '5.7.2'),
+(61, 'Divisão Administrativa', 1, '6'),
+(62, 'Chefia', 61, '6.1'),
+(63, 'Seção de Expediente e Pessoal', 61, '6.2'),
+(64, 'Chefia', 63, '6.2.1'),
+(65, 'Auxiliares', 63, '6.2.2'),
+(66, 'Seção de Apoio, Finanças e Material', 61, '6.3'),
+(67, 'Chefia', 66, '6.3.1'),
+(68, 'Auxiliares', 66, '6.3.2'),
+(69, 'Seção de Informações ao Cidadão', 1, '7'),
+(70, 'Chefia', 69, '7.1'),
+(71, 'Subseção de Análise e Processamento', 69, '7.2'),
+(72, 'Chefia', 71, '7.2.1'),
+(73, 'Adjuntos e Auxiliares', 71, '7.2.2'),
+(74, 'Subseção de Atendimento e Controle', 69, '7.3'),
+(75, 'Chefia', 74, '7.3.1'),
+(76, 'Adjuntos e Auxiliares', 74, '7.3.2'),
+(77, 'Seção de Tecnologia da Informação', 1, '8'),
+(78, 'Chefia', 77, '8.1'),
+(79, 'Subseção de Rede', 77, '8.2'),
+(80, 'Subseção de Desenvolvimento', 77, '8.3'),
+(81, 'Subseção de Suporte Técnico', 77, '8.4');

@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS atv_atividade;
+DROP TABLE IF EXISTS atv_configurar;
+DROP TABLE IF EXISTS atv_pop;
+DROP TABLE IF EXISTS atv_assunto_atividade;
+DROP TABLE IF EXISTS atv_usuario_fracao;
+DROP TABLE IF EXISTS atv_usuario_grupo;
+DROP TABLE IF EXISTS atv_fracao;
+DROP TABLE IF EXISTS atv_grupo;
+DROP TABLE IF EXISTS seg_usuario;

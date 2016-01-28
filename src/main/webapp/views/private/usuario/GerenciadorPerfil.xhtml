@@ -1,0 +1,105 @@
+<ui:composition template="/WEB-INF/template/Template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">#{msg.titulo_usuario}</ui:define>
+
+	<ui:define name="menu">
+		<ui:include src="/WEB-INF/template/MenuPrivate.xhtml" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<f:metadata>
+			<o:viewParam name="usuario"
+				value="#{gerenciadorUsuarioPerfilBean.usuario}" />
+			<f:viewAction action="#{gerenciadorUsuarioPerfilBean.inicializar}" />
+		</f:metadata>
+
+		<h:form>
+
+			<h1>#{msg.titulo_usuario_Perfil}</h1>
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:commandButton value="#{msg.comando_salvar}"
+						action="#{gerenciadorUsuarioPerfilBean.salvar}"
+						icon="#{msg.icon_salvar}" update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="#{msg.comando_pesquisar}"
+						outcome="/views/private/usuario/PesquisarUsuario"
+						icon="#{msg.icon_pesquisar}" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo"
+				styleClass="panel-sem-bordas">
+
+				<p:outputLabel value="#{msg.identidade}" for="idt" />
+				<p:inputText id="idt" size="20" maxlength="20"
+					value="#{gerenciadorUsuarioPerfilBean.usuario.identidade}" />
+
+				<p:outputLabel value="#{msg.nome_completo}" for="nome" />
+				<p:inputText id="nome" size="60" maxlength="100"
+					value="#{gerenciadorUsuarioPerfilBean.usuario.nomeUsuario}" />
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="2" id="grupoPainel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo"
+				styleClass="panel-sem-bordas">
+
+				<p:selectOneMenu id="perfil"
+					value="#{gerenciadorUsuarioPerfilBean.grupoSelecionado}">
+					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+						noSelectionOption="true" />
+					<f:selectItems value="#{gerenciadorUsuarioPerfilBean.grupos}"
+						var="perfil" itemValue="#{perfil}" itemLabel="#{perfil.descricao}" />
+				</p:selectOneMenu>
+
+				<p:commandButton value="#{msg.comando_adicionar}"
+					icon="#{msg.icon_adicionar}"
+					action="#{gerenciadorUsuarioPerfilBean.adicionarPerfil}"
+					update="tblPerfil, perfil" />
+
+			</p:panelGrid>
+
+			<p:dataTable id="tblPerfil"
+				value="#{gerenciadorUsuarioPerfilBean.usuario.grupos}" var="grupo"
+				emptyMessage="#{msg.table_emptyMessage}" rows="10" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom"
+				style="margin-top: 20px">
+
+				<p:column headerText="#{msg.grupo}">
+					<h:outputText value="#{grupo.nomeGrupo}" />
+				</p:column>
+
+				<p:column headerText="#{msg.descricao}">
+					<h:outputText value="#{grupo.descricao}" />
+				</p:column>
+
+				<p:column headerText="#{msg.acao}"
+					style="text-align: center; width: 100px">
+					<p:commandButton icon="#{msg.icon_excluir}"
+						title="#{msg.comando_excluir}"
+						action="#{gerenciadorUsuarioPerfilBean.excluirPerfil}"
+						update="@form">
+						<f:setPropertyActionListener
+							target="#{gerenciadorUsuarioPerfilBean.grupoSelecionado}"
+							value="#{grupo}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

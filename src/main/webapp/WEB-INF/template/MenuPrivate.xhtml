@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<div>
+
+		<h:form>
+
+			<p:menubar styleClass="menu-sistema">
+
+				<p:menuitem class="usuario" value="#{msg.inicio}"
+					outcome="/views/private/atividade/PesquisarAtividade"
+					icon="#{msg.icon_inicio}" />
+
+				<p:submenu label="#{msg.cadastrar}" icon="#{msg.icon_cadastrar}">
+					<p:menuitem value="#{msg.atividade}"
+						outcome="/views/private/atividade/GerenciadorAtividade" />
+
+					<p:menuitem value="#{msg.assunto_atividade}"
+						outcome="/views/private/assunto_atividade/GerenciadorAssuntoAtividade" />
+				</p:submenu>
+
+				<p:submenu label="#{msg.pesquisar}" icon="#{msg.icon_pesquisar}">
+					<p:menuitem value="#{msg.atividade}"
+						outcome="/views/private/atividade/PesquisarAtividade" />
+
+					<p:menuitem value="#{msg.assunto_atividade}"
+						outcome="/views/private/assunto_atividade/PesquisarAssuntoAtividade" />
+				</p:submenu>
+
+				<p:submenu label="#{msg.administrador}" icon="#{msg.icon_configurar}">
+					<p:menuitem value="#{msg.configuracao}"
+						outcome="/views/private/configurar/GerenciadorConfigurar" />
+
+					<p:menuitem value="#{msg.fracao}"
+						outcome="/views/private/fracao/PesquisarFracao" />
+
+					<p:menuitem value="#{msg.grupo}"
+						outcome="/views/private/grupo/PesquisarGrupo" />
+
+					<p:menuitem value="#{msg.usuario}"
+						outcome="/views/private/usuario/PesquisarUsuario" />
+				</p:submenu>
+
+				<p:menuitem value="#{msg.comanda_sugestao}"
+					url="http://10.67.98.135:8090/ModuloCaixaSugestao/"
+					icon="#{msg.icon_sugestao}" target="_black" />
+
+				<p:menuitem value="#{msg.comanda_sair}"
+					url="/j_spring_security_logout" icon="#{msg.icon_sair}" />
+
+				<p:submenu style="float: right; margin-right: 20px;"
+					label="#{usuarioSistemaBean.nomeUsuario}"
+					icon="#{msg.icon_usuario_editar}">
+					<p:menuitem value="#{msg.minha_conta}"
+						outcome="/views/private/usuario_logado/EditarUsuarioLogado" />
+				</p:submenu>
+
+			</p:menubar>
+
+		</h:form>
+
+	</div>
+
+</ui:composition>
