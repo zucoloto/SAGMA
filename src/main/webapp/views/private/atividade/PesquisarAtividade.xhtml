@@ -68,21 +68,30 @@
 				paginator="true" paginatorAlwaysVisible="false"
 				paginatorPosition="bottom" style="margin-top: 20px">
 
-				<p:column headerText="#{msg.atividade}">
+				<p:column headerText="#{msg.atividade}"
+					sortBy="#{atividade.assuntoAtividade.nomeAtividade}">
 					<h:outputText value="#{atividade.assuntoAtividade.nomeAtividade}" />
 				</p:column>
 
-				<p:column headerText="#{msg.fracao}">
+				<p:column headerText="#{msg.observacao}"
+					sortBy="#{atividade.observacao}">
+					<h:outputText value="#{atividade.observacao}" />
+				</p:column>
+
+				<p:column headerText="#{msg.fracao}"
+					sortBy="#{atividade.assuntoAtividade.fracao.fracaoPaiId.nomeFracao}">
 					<h:outputText
 						value="#{atividade.assuntoAtividade.fracao.fracaoPaiId.nomeFracao}" />
 				</p:column>
 
 				<p:column headerText="#{msg.status}"
-					style="text-align: center; width: 100px">
+					style="text-align: center; width: 100px"
+					sortBy="#{atividade.statusAtividade.descricao}">
 					<h:outputText value="#{atividade.statusAtividade.descricao}" />
 				</p:column>
 
-				<p:column headerText="#{msg.responsavel}">
+				<p:column headerText="#{msg.responsavel}"
+					sortBy="#{atividade.usuario.nomeUsuario}">
 					<h:outputText value="#{atividade.usuario.nomeUsuario}" />
 				</p:column>
 

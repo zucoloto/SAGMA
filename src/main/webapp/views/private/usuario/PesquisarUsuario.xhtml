@@ -13,6 +13,10 @@
 
 	<ui:define name="conteudo">
 
+		<f:metadata>
+			<f:viewAction action="#{pesquisarUsuarioBean.inicializar}" />
+		</f:metadata>
+
 		<h:form id="frmPesquisa">
 
 			<h1>#{titulo_usuario_Pesquisa}</h1>
@@ -37,7 +41,7 @@
 				paginatorAlwaysVisible="false" paginatorPosition="bottom"
 				style="margin-top: 20px">
 
-				<p:column headerText="#{msg.nome_completo}">
+				<p:column headerText="#{msg.nome_completo}" sortBy="#{usuario.nomeUsuario}">
 					<h:outputText value="#{usuario.nomeUsuario}" />
 				</p:column>
 
@@ -46,9 +50,14 @@
 				</p:column>
 
 				<p:column headerText="#{msg.acao}"
-					style="text-align: center; width: 150px">
-
+					style="text-align: center; width: 50px">
+					
 					<p:button icon="#{msg.icon_usuario_editar}" title="Editar Usuário"
+						outcome="/views/private/usuario/GerenciadorUsuario">
+						<f:param name="usuario" value="#{usuario.id}" />
+					</p:button>
+
+					<!-- <p:button icon="#{msg.icon_usuario_editar}" title="Editar Usuário"
 						outcome="/views/private/usuario/GerenciadorUsuario">
 						<f:param name="usuario" value="#{usuario.id}" />
 					</p:button>
@@ -61,7 +70,7 @@
 					<p:button icon="#{msg.icon_usuario_fracao}" title="Editar Fração"
 						outcome="/views/private/usuario/GerenciadorFracao">
 						<f:param name="usuario" value="#{usuario.id}" />
-					</p:button>
+					</p:button> -->
 
 				</p:column>
 

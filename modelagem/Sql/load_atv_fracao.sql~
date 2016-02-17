@@ -11,7 +11,7 @@ INSERT INTO `atv_fracao` (`id`, `nome_fracao`, `fracao_pai_id`, `ordem_qc`) VALU
 (10, 'Auxiliares', 9, '2.1.1'),
 (11, 'Seção de Integração e Coordenação', 8, '2.2'),
 (12, 'Chefia', 11, '2.2.1'),
-(13, 'Adjuntos e Auxiliar', 11, '2.2.2'),
+(12, 'Adjuntos e Auxiliar', 11, '2.2.2'),
 (14, 'Seção de Operações', 8, '2.3'),
 (15, 'Chefia', 14, '2.3.1'),
 (16, 'Adjuntos', 14, '2.3.2'),

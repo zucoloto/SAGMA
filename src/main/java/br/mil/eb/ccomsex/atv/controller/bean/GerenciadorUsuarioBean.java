@@ -44,7 +44,7 @@ public class GerenciadorUsuarioBean implements Serializable {
 	public void salvar() {
 		try {
 			usuarioService.salvar(this.usuario);
-			limpar();
+			//limpar();
 			FacesUtil.addInfoMessage(FacesUtil.getMensagemI18n("registro_salvo"));
 		} catch (NegocioException e) {
 			FacesUtil.addErrorMessage(FacesUtil.getMensagemI18n(e.getMessage()));

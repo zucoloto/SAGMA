@@ -37,7 +37,7 @@ public class UsuarioRepositoryJPA implements UsuarioRepository, Serializable {
 
 	@Override
 	public List<Usuario> listarTodos() {
-		return entityManager.createQuery("from Usuario", Usuario.class).getResultList();
+		return entityManager.createQuery("from Usuario order by nomeUsuario", Usuario.class).getResultList();
 	}
 
 	@Override

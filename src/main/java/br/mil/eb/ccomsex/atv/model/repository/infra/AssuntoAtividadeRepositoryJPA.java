@@ -36,12 +36,13 @@ public class AssuntoAtividadeRepositoryJPA implements AssuntoAtividadeRepository
 
 	@Override
 	public List<AssuntoAtividade> listarTodos() {
-		return entityManager.createQuery("from AssuntoAtividade", AssuntoAtividade.class).getResultList();
+		return entityManager.createQuery("from AssuntoAtividade order by nomeAtividade", AssuntoAtividade.class)
+				.getResultList();
 	}
 
 	@Override
 	public List<AssuntoAtividade> listarPorFracao(List<Fracao> fracoes) {
-		String jpql = "select a from AssuntoAtividade a JOIN a.fracao f where f IN (:pFracao)";
+		String jpql = "select a from AssuntoAtividade a JOIN a.fracao f where f IN (:pFracao) order by a.nomeAtividade";
 
 		TypedQuery<AssuntoAtividade> query = entityManager.createQuery(jpql, AssuntoAtividade.class);
 		query.setParameter("pFracao", fracoes);

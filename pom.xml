@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.mil.eb.ccomsex</groupId>
-	<artifactId>ModuloLevantamentoAtividade</artifactId>
+	<artifactId>SAGMA</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>war</packaging>
 
-	<name>Modulo - Levantamento de Atividade</name>
+	<name>SAGMA</name>
 	<url>http://intranet.ccomsex.eb.mil.br</url>
-	<description>Sistema de Levantamento de Atividade desenvolvido no CCOMSEx</description>
+	<description>Sistema de Acompanhamento da Gestão com Mapeamento das Atividades desenvolvido no CCOMSEx</description>
 
 	<organization>
 		<name>Exército Brasileiro - Centro de Comunicação Social do Exército</name>

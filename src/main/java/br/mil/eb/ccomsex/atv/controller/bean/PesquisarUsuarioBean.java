@@ -23,6 +23,10 @@ public class PesquisarUsuarioBean implements Serializable {
 
 	private List<Usuario> usuarios;
 
+	public void inicializar() {
+		pesquisar();
+	}
+
 	public void pesquisar() {
 		this.usuarios = usuarioService.listarTodos();
 	}

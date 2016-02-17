@@ -16,6 +16,14 @@
 		<f:metadata>
 			<o:viewParam name="usuario" value="#{gerenciadorUsuarioBean.usuario}" />
 			<f:viewAction action="#{gerenciadorUsuarioBean.inicializar}" />
+
+			<o:viewParam name="usuario"
+				value="#{gerenciadorUsuarioFracaoBean.usuario}" />
+			<f:viewAction action="#{gerenciadorUsuarioFracaoBean.inicializar}" />
+
+			<o:viewParam name="usuario"
+				value="#{gerenciadorUsuarioPerfilBean.usuario}" />
+			<f:viewAction action="#{gerenciadorUsuarioPerfilBean.inicializar}" />
 		</f:metadata>
 
 		<h:form>
@@ -52,30 +60,140 @@
 				<p:outputLabel value="#{msg.nome_completo}" for="nome" />
 				<p:inputText id="nome" size="60" maxlength="100"
 					value="#{gerenciadorUsuarioBean.usuario.nomeUsuario}" />
-
-				<p:outputLabel value="#{msg.email}" for="email" />
-				<p:inputText id="email" size="60" maxlength="250"
-					value="#{gerenciadorUsuarioBean.usuario.email}" />
-
-				<p:outputLabel value="#{msg.status}" for="status" />
-				<p:selectOneMenu id="status"
-					value="#{gerenciadorUsuarioBean.usuario.statusUsuario}">
-					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
-						noSelectionOption="true" />
-					<f:selectItems value="#{gerenciadorUsuarioBean.statusUsuario}"
-						var="status" itemValue="#{status}" itemLabel="#{status.descricao}" />
-				</p:selectOneMenu>
-
-				<p:outputLabel value="#{msg.senha}" for="senha" />
-				<p:password id="senha" match="confirmarSenha"
-					value="#{gerenciadorUsuarioBean.usuario.senha}" redisplay="true" />
-
-				<p:outputLabel value="#{msg.confirmar_senha}" for="confirmarSenha" />
-				<p:password id="confirmarSenha"
-					value="#{gerenciadorUsuarioBean.usuario.senha}" redisplay="true" />
-
 			</p:panelGrid>
 
+			<p:tabView>
+				<p:tab title="Usuário">
+					<p:panelGrid columns="2" id="painelSenha"
+						style="width: 100%; margin-top: 20px"
+						columnClasses="rotulo, campo" styleClass="panel-sem-bordas">
+
+						<p:outputLabel value="#{msg.email}" for="email" />
+						<p:inputText id="email" size="60" maxlength="250"
+							value="#{gerenciadorUsuarioBean.usuario.email}" />
+
+						<p:outputLabel value="#{msg.status}" for="status" />
+						<p:selectOneMenu id="status"
+							value="#{gerenciadorUsuarioBean.usuario.statusUsuario}">
+							<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{gerenciadorUsuarioBean.statusUsuario}"
+								var="status" itemValue="#{status}"
+								itemLabel="#{status.descricao}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg.senha}" for="senha" />
+						<p:password id="senha" match="confirmarSenha"
+							value="#{gerenciadorUsuarioBean.usuario.senha}" redisplay="true" />
+
+						<p:outputLabel value="#{msg.confirmar_senha}" for="confirmarSenha" />
+						<p:password id="confirmarSenha"
+							value="#{gerenciadorUsuarioBean.usuario.senha}" redisplay="true" />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="Fração">
+
+
+					<p:panelGrid columns="2" id="fracaoPainel"
+						style="width: 100%; margin-top: 20px"
+						columnClasses="rotulo, campo" styleClass="panel-sem-bordas">
+
+						<p:selectOneMenu id="fracao"
+							value="#{gerenciadorUsuarioFracaoBean.fracaoSelecionado}">
+							<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{gerenciadorUsuarioFracaoBean.fracaos}"
+								var="fracao" itemValue="#{fracao}"
+								itemLabel="#{fracao.ordemQC} - #{fracao.nomeFracao}" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="#{msg.comando_adicionar}"
+							icon="#{msg.icon_adicionar}"
+							action="#{gerenciadorUsuarioFracaoBean.adicionarFracao}"
+							update="tblFracao, fracao" />
+
+					</p:panelGrid>
+
+					<p:dataTable id="tblFracao"
+						value="#{gerenciadorUsuarioFracaoBean.usuario.fracoes}"
+						var="fracao" emptyMessage="#{msg.table_emptyMessage}" rows="10"
+						paginator="true" paginatorAlwaysVisible="false"
+						paginatorPosition="bottom" style="margin-top: 20px">
+
+						<p:column headerText="#{msg.fracao}">
+							<h:outputText value="#{fracao.ordemQC} - #{fracao.nomeFracao}" />
+						</p:column>
+
+						<p:column headerText="#{msg.fracao_sup}">
+							<h:outputText
+								value="#{fracao.fracaoPaiId.ordemQC} - #{fracao.fracaoPaiId.nomeFracao}" />
+						</p:column>
+
+						<p:column headerText="#{msg.acao}"
+							style="text-align: center; width: 100px">
+							<p:commandButton icon="#{msg.icon_excluir}"
+								title="#{msg.comando_excluir}"
+								action="#{gerenciadorUsuarioFracaoBean.excluirFracao}"
+								update="@form">
+								<f:setPropertyActionListener
+									target="#{gerenciadorUsuarioFracaoBean.fracaoSelecionado}"
+									value="#{fracao}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Perfil">
+					<p:panelGrid columns="2" id="grupoPainel"
+						style="width: 100%; margin-top: 20px"
+						columnClasses="rotulo, campo" styleClass="panel-sem-bordas">
+
+						<p:selectOneMenu id="perfil"
+							value="#{gerenciadorUsuarioPerfilBean.grupoSelecionado}">
+							<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{gerenciadorUsuarioPerfilBean.grupos}"
+								var="perfil" itemValue="#{perfil}"
+								itemLabel="#{perfil.descricao}" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="#{msg.comando_adicionar}"
+							icon="#{msg.icon_adicionar}"
+							action="#{gerenciadorUsuarioPerfilBean.adicionarPerfil}"
+							update="tblPerfil, perfil" />
+
+					</p:panelGrid>
+
+					<p:dataTable id="tblPerfil"
+						value="#{gerenciadorUsuarioPerfilBean.usuario.grupos}" var="grupo"
+						emptyMessage="#{msg.table_emptyMessage}" rows="10"
+						paginator="true" paginatorAlwaysVisible="false"
+						paginatorPosition="bottom" style="margin-top: 20px">
+
+						<p:column headerText="#{msg.grupo}">
+							<h:outputText value="#{grupo.nomeGrupo}" />
+						</p:column>
+
+						<p:column headerText="#{msg.descricao}">
+							<h:outputText value="#{grupo.descricao}" />
+						</p:column>
+
+						<p:column headerText="#{msg.acao}"
+							style="text-align: center; width: 100px">
+							<p:commandButton icon="#{msg.icon_excluir}"
+								title="#{msg.comando_excluir}"
+								action="#{gerenciadorUsuarioPerfilBean.excluirPerfil}"
+								update="@form">
+								<f:setPropertyActionListener
+									target="#{gerenciadorUsuarioPerfilBean.grupoSelecionado}"
+									value="#{grupo}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+			</p:tabView>
 		</h:form>
 
 	</ui:define>
