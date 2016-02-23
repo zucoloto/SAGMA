@@ -45,15 +45,75 @@
 				<p:inputText id="email" size="60" maxlength="250"
 					value="#{usuarioLogadoBean.usuarioLogado.email}" />
 
-				<p:outputLabel value="#{msg.senha}" for="senha" />
-				<p:password id="senha" match="confirmarSenha"
-					value="#{usuarioLogadoBean.usuarioLogado.senha}" redisplay="true" />
-
-				<p:outputLabel value="#{msg.confirmar_senha}" for="confirmarSenha" />
-				<p:password id="confirmarSenha"
-					value="#{usuarioLogadoBean.usuarioLogado.senha}" redisplay="true" />
-
 			</p:panelGrid>
+
+			<p:tabView>
+				<p:tab title="Senha">
+					<p:panelGrid columns="2" id="painelSenha"
+						style="width: 100%; margin-top: 20px"
+						columnClasses="rotulo, campo" styleClass="panel-sem-bordas">
+
+						<p:outputLabel value="#{msg.senha}" for="senha" />
+						<p:password id="senha" match="confirmarSenha"
+							value="#{usuarioLogadoBean.usuarioLogado.senha}" redisplay="true" />
+
+						<p:outputLabel value="#{msg.confirmar_senha}" for="confirmarSenha" />
+						<p:password id="confirmarSenha"
+							value="#{usuarioLogadoBean.usuarioLogado.senha}" redisplay="true" />
+					</p:panelGrid>
+				</p:tab>
+				
+				<p:tab title="Fração">
+					<p:panelGrid columns="2" id="fracaoPainel"
+						style="width: 100%; margin-top: 20px"
+						columnClasses="rotulo, campo" styleClass="panel-sem-bordas">
+
+						<p:selectOneMenu id="fracao"
+							value="#{usuarioLogadoBean.fracaoSelecionado}">
+							<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{usuarioLogadoBean.fracaos}"
+								var="fracao" itemValue="#{fracao}"
+								itemLabel="#{fracao.ordemQC} - #{fracao.nomeFracao}" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="#{msg.comando_adicionar}"
+							icon="#{msg.icon_adicionar}"
+							action="#{usuarioLogadoBean.adicionarFracao}"
+							update="tblFracao, fracao" />
+
+					</p:panelGrid>
+
+					<p:dataTable id="tblFracao"
+						value="#{usuarioLogadoBean.usuarioLogado.fracoes}"
+						var="fracao" emptyMessage="#{msg.table_emptyMessage}" rows="10"
+						paginator="true" paginatorAlwaysVisible="false"
+						paginatorPosition="bottom" style="margin-top: 20px">
+
+						<p:column headerText="#{msg.fracao}">
+							<h:outputText value="#{fracao.ordemQC} - #{fracao.nomeFracao}" />
+						</p:column>
+
+						<p:column headerText="#{msg.fracao_sup}">
+							<h:outputText
+								value="#{fracao.fracaoPaiId.ordemQC} - #{fracao.fracaoPaiId.nomeFracao}" />
+						</p:column>
+
+						<p:column headerText="#{msg.acao}"
+							style="text-align: center; width: 100px">
+							<p:commandButton icon="#{msg.icon_excluir}"
+								title="#{msg.comando_excluir}"
+								action="#{usuarioLogadoBean.excluirFracao}"
+								update="@form">
+								<f:setPropertyActionListener
+									target="#{usuarioLogadoBean.fracaoSelecionado}"
+									value="#{fracao}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+			</p:tabView>
 
 		</h:form>
 
