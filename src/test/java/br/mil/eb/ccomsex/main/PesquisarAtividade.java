@@ -47,7 +47,7 @@ public class PesquisarAtividade {
 		filtroAtividade.setStatusAtividade(StatusAtividade.CONCLUIDA);
 		
 		Fracao filtroFracao = new Fracao();
-		filtroFracao = entityManager.find(Fracao.class, 3L);
+		filtroFracao = entityManager.find(Fracao.class, 74L);
 		
 		System.out.println(filtroFracao.getNomeFracao());
 		
@@ -103,7 +103,7 @@ public class PesquisarAtividade {
 	@Test
 	public void ExecutarPorObjeto() {
 		Usuario usuario = new Usuario();
-		usuario = entityManager.find(Usuario.class, 8L);
+		usuario = entityManager.find(Usuario.class, 12L);
 
 		List<Fracao> fracoes = new ArrayList<>();
 		fracoes = usuario.getFracoes();
@@ -124,8 +124,8 @@ public class PesquisarAtividade {
 	@Test
 	public void ExecutarPorId() {
 		Fracao fracao = new Fracao();
-		fracao = entityManager.find(Fracao.class, 80L);
-		System.out.println(fracao.getNomeFracao());
+		fracao = entityManager.find(Fracao.class, 69L);
+		System.out.println("Seção: " + fracao.getNomeFracao());
 
 		String jpql = "select a from Atividade a JOIN a.assuntoAtividade f where f.fracao.id IN (:pFracao)";
 

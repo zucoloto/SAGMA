@@ -1,6 +1,7 @@
 package br.mil.eb.ccomsex.atv.controller.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.mil.eb.ccomsex.atv.model.entity.AssuntoAtividade;
+import br.mil.eb.ccomsex.atv.model.entity.Fracao;
 import br.mil.eb.ccomsex.atv.model.entity.Usuario;
 import br.mil.eb.ccomsex.atv.model.service.AssuntoAtividadeService;
 import br.mil.eb.ccomsex.atv.model.service.exception.NegocioException;
@@ -32,7 +34,16 @@ public class PesquisarAssuntoAtividadeBean implements Serializable {
 	private Usuario usuarioLogado;
 
 	public void pesquisar() {
-		this.assuntoAtividades = assuntoAtividadeService.listarPorFracao(usuarioLogado.getFracoes());
+		List<Fracao> fracoes = new ArrayList<>();
+
+		fracoes.add(usuarioLogado.getFracoes().get(0).getFracaoPaiId());
+		fracoes.add(usuarioLogado.getFracoes().get(0));
+
+		this.assuntoAtividades = assuntoAtividadeService.listarPorFracao(fracoes);
+
+		// this.assuntoAtividades =
+		// assuntoAtividadeService.listarPorFracao(usuarioLogado.getFracoes());
+		// this.assuntoAtividades = assuntoAtividadeService.listarTodos();
 	}
 
 	public void excluir() {

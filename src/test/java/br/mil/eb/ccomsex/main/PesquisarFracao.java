@@ -36,7 +36,7 @@ public class PesquisarFracao {
 	@Test
 	public void listarFracao() {
 		Usuario usuario = new Usuario();
-		usuario = manager.find(Usuario.class, 8L);
+		usuario = manager.find(Usuario.class, 12L);
 
 		System.out.println("Usuário: " + usuario.getNomeUsuario());
 		System.out.println("-------------------");
@@ -103,7 +103,7 @@ public class PesquisarFracao {
 	@Test
 	public void listarFracaoPaiPorUsuarioList() {
 		Usuario usuario = new Usuario();
-		usuario = manager.find(Usuario.class, 2L);
+		usuario = manager.find(Usuario.class, 12L);
 
 		String jpql = "select f from Fracao f where f IN (:pFracoes) group by f.fracaoPaiId order by ordemQC";
 		TypedQuery<Fracao> query = manager.createQuery(jpql, Fracao.class);

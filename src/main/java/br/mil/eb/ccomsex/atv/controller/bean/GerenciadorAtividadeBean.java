@@ -1,6 +1,7 @@
 package br.mil.eb.ccomsex.atv.controller.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.inject.Named;
 
 import br.mil.eb.ccomsex.atv.model.entity.AssuntoAtividade;
 import br.mil.eb.ccomsex.atv.model.entity.Atividade;
+import br.mil.eb.ccomsex.atv.model.entity.Fracao;
 import br.mil.eb.ccomsex.atv.model.entity.StatusAtividade;
 import br.mil.eb.ccomsex.atv.model.entity.StatusPrioridade;
 import br.mil.eb.ccomsex.atv.model.entity.Usuario;
@@ -65,8 +67,16 @@ public class GerenciadorAtividadeBean implements Serializable {
 	}
 
 	public void carregarAssuntoAtividade() {
+		List<Fracao> fracoes = new ArrayList<>();
+
+		fracoes.add(usuarioLogado.getFracoes().get(0).getFracaoPaiId());
+		fracoes.add(usuarioLogado.getFracoes().get(0));
+
+		this.assuntoAtividades = assuntoAtividadeService.listarPorFracao(fracoes);
+
 		// assuntoAtividades = assuntoAtividadeService.listarTodos();
-		this.assuntoAtividades = assuntoAtividadeService.listarPorFracao(usuarioLogado.getFracoes());
+		// this.assuntoAtividades =
+		// assuntoAtividadeService.listarPorFracao(usuarioLogado.getFracoes());
 	}
 
 	public void carregarUsuario() {

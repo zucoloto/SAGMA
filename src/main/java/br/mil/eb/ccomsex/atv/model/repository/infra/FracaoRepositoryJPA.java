@@ -46,8 +46,6 @@ public class FracaoRepositoryJPA implements FracaoRepository, Serializable {
 		query.setParameter("pFracoes", fracoes);
 		List<Fracao> fracoesPai = query.getResultList();
 		return listarFracaoFilhoPorUsuario(fracoesPai);
-		
-		
 
 		/*
 		 * String jpql =

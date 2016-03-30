@@ -65,7 +65,7 @@ public class PesquisarFracaoBean implements Serializable {
 	public void excluir() {
 		try {
 			fracaoService.excluir(fracaoSelecionado);
-			this.fracoes.remove(fracaoSelecionado);
+			//this.fracoes.remove(fracaoSelecionado);
 			FacesUtil.addInfoMessage(FacesUtil.getMensagemI18n("registro_excluido"));
 		} catch (NegocioException e) {
 			FacesUtil.addErrorMessage(FacesUtil.getMensagemI18n(e.getMessage()));

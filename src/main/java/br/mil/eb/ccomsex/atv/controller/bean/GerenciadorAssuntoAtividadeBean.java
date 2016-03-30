@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,8 +28,8 @@ import br.mil.eb.ccomsex.atv.model.entity.Periodico;
 import br.mil.eb.ccomsex.atv.model.entity.Pop;
 import br.mil.eb.ccomsex.atv.model.entity.Usuario;
 import br.mil.eb.ccomsex.atv.model.service.AssuntoAtividadeService;
+import br.mil.eb.ccomsex.atv.model.service.FracaoService;
 import br.mil.eb.ccomsex.atv.model.service.PopService;
-import br.mil.eb.ccomsex.atv.model.service.UsuarioService;
 import br.mil.eb.ccomsex.atv.model.service.exception.NegocioException;
 import br.mil.eb.ccomsex.atv.util.jsf.FacesUtil;
 import br.mil.eb.ccomsex.atv.util.jsf.UsuarioLogado;
@@ -46,14 +47,20 @@ public class GerenciadorAssuntoAtividadeBean implements Serializable {
 
 	private List<Fracao> fracoes = new ArrayList<>();
 
+	// @Inject
+	// private UsuarioService usuarioService;
+
 	@Inject
-	private UsuarioService usuarioService;
+	private FracaoService fracaoService;
 
 	@Inject
 	@UsuarioLogado
 	private Usuario usuarioLogado;
 
-	private Usuario usuario;
+	// private Usuario usuario;
+
+	@Inject
+	private ExternalContext externalContext;
 
 	@Inject
 	private PopService popService;
@@ -82,8 +89,17 @@ public class GerenciadorAssuntoAtividadeBean implements Serializable {
 	}
 
 	public void carregarFracao() {
-		this.usuario = usuarioService.buscarPorId(usuarioLogado.getId());
-		fracoes = this.usuario.getFracoes();
+		// this.usuario = usuarioService.buscarPorId(usuarioLogado.getId());
+		// fracoes = this.usuario.getFracoes();
+
+		// fracoes =
+		// fracaoService.listarFracoesDaDivisaoDoUsuario(usuarioLogado.getId());
+
+		if (externalContext.isUserInRole("ADM_SISTEMA") || externalContext.isUserInRole("ADM_OM")) {
+			this.fracoes = fracaoService.listarTodos();
+		} else {
+			this.fracoes = fracaoService.listarFracaoPai(usuarioLogado.getFracoes());
+		}
 	}
 
 	public void carregarConfigurar() {
@@ -148,7 +164,7 @@ public class GerenciadorAssuntoAtividadeBean implements Serializable {
 			this.pop = popService.salvar(pop);
 
 			this.assuntoAtividade = assuntoAtividadeService.buscarPorId(assuntoAtividade.getId());
-			
+
 			RequestContext requestContext = RequestContext.getCurrentInstance();
 			requestContext.update("form:arquivoPop");
 			requestContext.update(":form:buttonDownload");

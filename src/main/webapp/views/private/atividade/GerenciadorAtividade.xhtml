@@ -66,7 +66,7 @@
 						itemLabel="#{usuario.nomeUsuario}" />
 				</p:selectOneMenu>
 
-				<p:outputLabel value="#{msg.atividade}" for="atividade" />
+				<p:outputLabel value="#{msg.assunto_atividade}" for="atividade" />
 				<p:selectOneMenu id="atividade"
 					value="#{gerenciadorAtividadeBean.atividade.assuntoAtividade}">
 					<f:selectItem itemLabel="#{msg.selectItem_itemLabel}"
@@ -117,7 +117,7 @@
 					pages="1" mode="popup"
 					maxdate="#{gerenciadorAtividadeBean.dataHoje}" locale="pt" />
 
-				<p:outputLabel value="#{msg.observacao}" for="obs" />
+				<p:outputLabel value="#{msg.atividade}" for="obs" />
 				<h:panelGroup layout="block" style="padding-right: 10px">
 					<p:inputTextarea id="obs"
 						value="#{gerenciadorAtividadeBean.atividade.observacao}" rows="5"

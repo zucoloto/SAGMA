@@ -15,22 +15,23 @@
 					icon="#{msg.icon_inicio}" />
 
 				<p:submenu label="#{msg.cadastrar}" icon="#{msg.icon_cadastrar}">
-					<p:menuitem value="#{msg.atividade}"
-						outcome="/views/private/atividade/GerenciadorAtividade" />
-
 					<p:menuitem value="#{msg.assunto_atividade}"
 						outcome="/views/private/assunto_atividade/GerenciadorAssuntoAtividade" />
+
+					<p:menuitem value="#{msg.atividade}"
+						outcome="/views/private/atividade/GerenciadorAtividade" />
 				</p:submenu>
 
 				<p:submenu label="#{msg.pesquisar}" icon="#{msg.icon_pesquisar}">
-					<p:menuitem value="#{msg.atividade}"
-						outcome="/views/private/atividade/PesquisarAtividade" />
-
 					<p:menuitem value="#{msg.assunto_atividade}"
 						outcome="/views/private/assunto_atividade/PesquisarAssuntoAtividade" />
+					
+					<p:menuitem value="#{msg.atividade}"
+						outcome="/views/private/atividade/PesquisarAtividade" />
 				</p:submenu>
 
-				<p:submenu label="#{msg.administrador}" icon="#{msg.icon_configurar}">
+				<p:submenu label="#{msg.administrador}"
+					icon="#{msg.icon_configurar}">
 					<p:menuitem value="#{msg.configuracao}"
 						outcome="/views/private/configurar/GerenciadorConfigurar" />
 

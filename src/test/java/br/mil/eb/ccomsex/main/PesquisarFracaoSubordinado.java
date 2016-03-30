@@ -30,7 +30,7 @@ public class PesquisarFracaoSubordinado {
 	@Test
 	public void Executar() {
 		Usuario usuario = new Usuario();
-		usuario = manager.find(Usuario.class, 4L);
+		usuario = manager.find(Usuario.class, 12L);
 
 		TypedQuery<Fracao> query = null;
 
